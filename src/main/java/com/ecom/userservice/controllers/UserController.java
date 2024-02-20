@@ -1,10 +1,9 @@
 package com.ecom.userservice.controllers;
 
+import com.ecom.userservice.dtos.UserDTO;
 import com.ecom.userservice.entity.User;
 import com.ecom.userservice.exception.UserNotFoundException;
 import com.ecom.userservice.services.IUserService;
-import com.ecom.userservice.services.impl.UserService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,18 +33,21 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> addNewUser(@RequestBody User user){
-        return new ResponseEntity<>(userService.addNewUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> addNewUser(@RequestBody UserDTO userDTO){
+
+        return new ResponseEntity<>(userService.addNewUser(userDTO.getUserFromDTO()), HttpStatus.CREATED);
     }
 
+
+
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updateExistingUser(@PathVariable("id") Long id, @RequestBody User user) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.updateExistingUser(id, user), HttpStatus.OK);
+    public ResponseEntity<User> updateExistingUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.updateExistingUser(id, userDTO.getUserFromDTO()), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> replaceExistingUser(@PathVariable("id") Long id, @RequestBody User user) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.replaceExistingUser(id, user), HttpStatus.OK);
+    public ResponseEntity<User> replaceExistingUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.replaceExistingUser(id, userDTO.getUserFromDTO()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
